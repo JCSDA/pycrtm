@@ -20,7 +20,7 @@ def main( a ):
     scriptDir = os.path.split(os.path.abspath(__file__))[0]
     os.chdir( crtmRepos )
     # get installed/to be installed crtm path based on repository version. 
-    with open(os.path.join('libsrc','CRTM_Version.inc'),'r') as f:
+    with open(os.path.join('src','CRTM_Version.inc'),'r') as f:
         line = f.readline()
         crtm_dir = 'crtm_'+line.split()[2]
         path2CRTM = os.path.join(installPath,crtm_dir)
