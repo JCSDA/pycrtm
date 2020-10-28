@@ -1,6 +1,7 @@
 # pyCRTM - python interface to CRTM.
 
 ## Bryan M. Karpowicz, Ph.D. - USRA/GESTAR/NASA 610.1 Global Modeling and Assimilation Office, with Contributions from Patrick Stegmann, Dr.-Ing. - JCSDA
+## Additional configuration infomation for the crtm-bundle (github.com/JCSDA/crtm-bundle) provided by Benjamin Johnson, Ph.D. 
 
 This is a basic python interface to CRTM v2.4.0. 
 
@@ -31,7 +32,7 @@ the following arguments are required: --install, --repos, --coef, --ncpath, --h5
 
 ### Required:
 * `--install` -  Install path to crtm library or where the user would like the crtm install directory (e.g., /home/user/ if you want crtm_v2.4.0 to install in /home/user/crtm_v2.4.0)
-* `--repos`   -  Path to CRTM git checkout (e.g. REL-2.4.0) 
+* `--repos`   -  Path to CRTM git checkout (e.g. crtm_v2.4.0) 
 * `--coef`    -  Path where the crtm coefficients are stored under subdirectory crtm_coef_pycrtm
 * `--ncpath`   -  Path to netcdf library (root path e.g. /usr/local/Cellar/netcdf/4.7.4_1, where lib and include are subdirectories underneath) 
 * `--h5path`   -  Path to hdf5 library (root path e.g. /usr/local/Cellar/hdf5/1.12.0_1, where lib and include are subdirectories underneath) 
@@ -41,11 +42,22 @@ the following arguments are required: --install, --repos, --coef, --ncpath, --h5
 * `--arch` select compiler/environment gfortran (gcc), ifort (intel) have been tested along with openmp enabled equiavalents (gfortran-openmp, ifort-openmp). Default gfortran-openmp
 * `--inplace` this will skip the building of CRTM, but instead just compile pycrtm interface and link to the install path (e.g.,--install /home/user/, if you have previously installed to /home/user/crtm_v2.4.0)`.
 
+Assuming the following structure in `crtm-bundle`:
+```
+crtm-bundle/crtm
+crtm-bundle/pycrtm
+crtm-bundle/crtm_v2.4.0/ 
+```
 
-Example to install CRTM in this directory under a subdirectory under the CRTM git checkout, and place the coefficients in this diectory`:
+
+Example to install CRTM in this directory under a subdirectory under the CRTM git checkout, and place the coefficients in this diectory`
 ```
-./setup_pycrtm.py  --install $PWD/../REL-2.4.0/ --repos $PWD/../REL-2.4.0 --jproc 1 --coef $PWD --ncpath /usr/local/Cellar/netcdf/4.7.4_1 --h5path /usr/local/Cellar/hdf5/1.12.0_1 --arch gfortran-openmp
+./setup_pycrtm.py  --install $PWD/../ --repos $PWD/../crtm/ --jproc 1 --coef $PWD --ncpath /usr/local/ --h5path /usr/local/ --arch gfortran --inplace
+
+./setup_pycrtm.py  --install $PWD/../crtm_v2.4.0/ --repos $PWD/../crtm_v2.4.0 --jproc 1 --coef $PWD --ncpath /usr/local/Cellar/netcdf/4.7.4_1 --h5path /usr/local/Cellar/hdf5/1.12.0_1 --arch gfortran-openmp
 ```
+
+
 Once completed:
 
 * `$PWD/pycrtm.cpython-37m-PLATFORM.so` <-- (will always reside here) f2py interface compiled by setup 
@@ -56,14 +68,14 @@ Once completed:
 
 Following the example the CRTM will be installed here:
 
-* `$PWD/../REL-2.4.0/config.log`                        <-- usual config associated with CRTM
-* `$PWD/../REL-2.4.0/crtm_v2.4.0/include`               <-- path to all compiled fortran modules
-* `$PWD/../REL-2.4.0/crtm_v2.4.0/lib/libcrtm.a`         <-- usual crtm static library
+* `$PWD/../crtm_v2.4.0/config.log`                        <-- usual config associated with CRTM
+* `$PWD/../crtm_v2.4.0/crtm_v2.4.0/include`               <-- path to all compiled fortran modules
+* `$PWD/../crtm_v2.4.0/crtm_v2.4.0/lib/libcrtm.a`         <-- usual crtm static library
 * `$PWD/crtm_coef_pycrtm`                               <-- path to crtm_coefficients
 
 To make things a bit simpler some installer scripts and scripts to load modules on the NASA NCCS discover cluster have been included:
-* `discover_install_gfortran_openmp.sh`     <-- will install using gfortran and OpenMP if you checkout the CRTM repository at ../REL-2.4.0 
-* `discover_install_ifort_openmp.sh`        <-- will install using ifort and OpenMP if you checkout the CRTM repository at ../REL-2.4.0
+* `discover_install_gfortran_openmp.sh`     <-- will install using gfortran and OpenMP if you checkout the CRTM repository at ../crtm_v2.4.0 
+* `discover_install_ifort_openmp.sh`        <-- will install using ifort and OpenMP if you checkout the CRTM repository at ../crtm_v2.4.0
 * `discover_modules_gfortran_openmp.sh`	    <-- load the necessary modules whenever you want to run pycrtm using gfortran/OpenMP on discover
 * `discover_modules_ifort_openmp.sh`        <-- load the necessary modules whenever you want to run pycrtm using ifort/OpenMP on discover
 
@@ -78,8 +90,8 @@ setenv OPT /discover/swdev/jcsda/modules
 module use $OPT/modulefiles
 ```
 For those on a Mac and use homebrew some installer scripts have been included:
-* `homebrew_install.sh`                     <-- will install on standard homebrew install using gfortran/OpenMP if you checkout the CRTM repository at ../REL-2.4.0
-* `homebrew_install_userdir.sh`             <-- will install on homebrew install configured to run in the user's directory using gfortran/OpenMP if you checkout the CRTM repository at ../REL-2.4.0
+* `homebrew_install.sh`                     <-- will install on standard homebrew install using gfortran/OpenMP if you checkout the CRTM repository at ../crtm_v2.4.0
+* `homebrew_install_userdir.sh`             <-- will install on homebrew install configured to run in the user's directory using gfortran/OpenMP if you checkout the CRTM repository at ../crtm_v2.4.0
 
 ---------------------------------------------------------------------------------------- 
 
@@ -90,12 +102,6 @@ Two basic scripts which will perform cases 1-4 (stored in $PWD/testCases/data/ca
 * `$PWD/testCases/test_atms.py`
 * `$PWD/testCases/test_cris.py`
 These *should* just say Yay, and not produce any plots if successful. 
-
-The following scripts will do the same thing, only this time load up the same 4 profiles multiple times to further test threading with 10 threads (turn your laptop into a space heater more or less).
-* `$PWD/testCases/test_atms_threads.py`
-* `$PWD/testCases/test_cris_threads.py`
-These *should* just say Yay, and not produce any plots if successful. 
-
 
 The following scripts will run CRTM without aerosols or clouds:
 * `$PWD/testCases/test_atms_no_clouds.py`
@@ -130,7 +136,7 @@ Once initialized, the user will need to provide values for the desired profiles 
 crtmOb = pyCRTM()
 crtmOb.coefficientPath = pathInfo['CRTM']['coeffs_dir']
 crtmOb.sensor_id = sensor_id
-crtmOb.nThreads = 4
+crtmOb.nThreads = 1
 crtmOb.profiles = profiles
 ```
 
