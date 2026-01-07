@@ -25,12 +25,13 @@ if [[ ${SEL} == 'intel' ]]; then
   module load stack-intel-oneapi-mpi
 fi
 
+module load git
 module load git-lfs
 module load netcdf-c
 module load netcdf-cxx4
 module load netcdf-fortran
 export CONDA_VENV="pycrtm_${MOD_SET}_modern"
-conda create --name ${CONDA_VENV} python=3.11 ipykernel cartopy scipy dask xarray scikit-build h5py netcdf4 cmake 
+conda create --name ${CONDA_VENV} python=3.11 cmake 
 conda activate ${CONDA_VENV}
 
 export PWDOLD=${PWD}
@@ -109,9 +110,10 @@ printf "path_used =${CHECKOUT_PATH}/crtm_coefficients\n" >> setup.cfg
 #pip install --upgrade cmake
 mkdir $PWD/tmp 
 export TMPDIR=$PWD/tmp
-pip install . -v --no-cache-dir
-
+python -m pip install matplotlib netcdf4 h5py
+python -m pip install . -v --no-cache-dir
 conda env config vars set LD_LIBRARY_PATH=${LD_LIBRARY_PATH}
 cd testCases
-python3 test_atms.py 
+for bar in *py; do foo=$(realpath $bar); echo "STARTING python3 $foo"; python3 $foo 2>&1 ; echo "$foo COMPLETE"; done
+
 cd $PWDOLD 
