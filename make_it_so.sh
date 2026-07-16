@@ -184,6 +184,8 @@ fi
 printf "# path used by pycrtm to read coefficients\n" >> setup.cfg 
 printf "path_used =${CHECKOUT_PATH}/crtm_coefficients\n" >> setup.cfg 
 
+export NetCDF_ROOT=${CONDA_PREFIX}/
+
 pip install . 
 
 cd testCases
